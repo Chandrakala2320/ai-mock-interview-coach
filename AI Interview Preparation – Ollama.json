@@ -1,0 +1,115 @@
+{
+  "name": "AI Interview Preparation – Ollama",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "395bd533-9612-4211-9585-f6f6457a0823",
+      "name": "When chat message received",
+      "webhookId": "0fdaccd7-3616-4eab-be59-685de684639f"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are an AI mock interview coach.\n\nGreet the user politely.\nIf the user greets, ask for role and experience.\nIf role and experience are given, ask one interview question.\nIf an answer is given, evaluate it, give a score out of 10, and 2 improvement tips.\nbe like a real interviewer\nBe professional, encouraging, and concise.\nRespond in one message.\n\n\n\n\n\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "3b0eebc2-6a73-4823-9df2-122ae7ecbaef",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "phi3:latest",
+        "options": {
+          "temperature": 0.3,
+          "numPredict": 100
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "aab93a3b-a87c-4d26-ae09-eba8ebec753d",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "a8qP0h88Vb1nYh2T",
+          "name": "Ollama account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "3af433fd-ecb1-4800-ae31-e895b2b781c4",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7e66fb67-f554-4984-9a7b-daf3e2867e0e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6992e8c2b85c82469fa72dcf8c1f402a3ac8422a9f31c8723e0aa13e534a04ca"
+  },
+  "id": "mEex2b32j9LY0YTl",
+  "tags": []
+}
